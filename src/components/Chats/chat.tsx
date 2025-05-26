@@ -1,7 +1,15 @@
 import React from "react";
-
+import ChatHeader from "./chatComponents/chatHeader";
+import ChatContent from "./chatComponents/chatContent";
+import ChatFooter from "./chatComponents/chatFooter";
 const ChatPage = () => {
-  return <div className=" flex-2">ChatPage</div>;
+  return (
+    <div className="flex flex-col border-r-[1px] border-gray-400 pr-2 overflow-auto flex-2">
+      <ChatHeader />
+      <ChatContent />
+      <ChatFooter />
+    </div>
+  );
 };
 
 export default ChatPage;

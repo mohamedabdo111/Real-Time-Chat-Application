@@ -21,7 +21,10 @@
 
 body {
   /* background: var(--background); */
-  background-image: url("../../public/bgChatTwo.jpg");
+  /* background-image: url("../../public/bgChatTwo.jpg"); */
+  background-color: rgba(17, 25, 40, 0.75);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  backdrop-filter: blur(10px) saturate(180%);
   background-size: cover;
   background-position: center;
   color: var(--foreground);
@@ -33,9 +36,9 @@ body {
 }
 
 .app {
-  background-color: rgba(17, 25, 40, 0.75);
+  /* background-color: rgba(17, 25, 40, 0.75);
   -webkit-backdrop-filter: blur(10px) saturate(180%);
-  backdrop-filter: blur(10px) saturate(180%);
+  backdrop-filter: blur(10px) saturate(180%); */
 }
 
 .searchParent {
