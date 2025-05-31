@@ -1,18 +1,42 @@
+"use client";
 import LoginForm from "@/components/auth/login";
-import ChatPage from "@/components/Chats/chat";
-import DetailsPage from "@/components/Details/details";
-import ListPage from "@/components/Lists/list";
-import React from "react";
+import ChatMessages from "@/components/Chats/chat";
+import Details from "@/components/Details/details";
+import ListUsers from "@/components/Lists/list";
+import { IUserState } from "@/interfaces/interfaces";
+import { auth } from "@/lib/firebase";
+import { useCurrentChat } from "@/lib/useChatState";
+import { UseCurrentUser } from "@/lib/useState";
+import { onAuthStateChanged } from "firebase/auth";
+import React, { useEffect } from "react";
 
 const Home = () => {
-  const user = false;
+  const { currentUser, loading, fetchCurrentUser } =
+    UseCurrentUser() as IUserState;
+  const { chatId } = useCurrentChat() as any;
+
+  useEffect(() => {
+    const res = onAuthStateChanged(auth, (user) => {
+      fetchCurrentUser(user?.uid || "");
+    });
+    return () => {
+      res();
+    };
+  }, []);
+
+  if (loading)
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Loading...
+      </div>
+    );
   return (
     <div className="w-full h-full pb app  p-4 flex gap-3 ">
-      {user ? (
+      {currentUser ? (
         <>
-          <ListPage />
-          <ChatPage />
-          <DetailsPage />
+          <ListUsers />
+          {chatId && <ChatMessages />}
+          {chatId && <Details />}
         </>
       ) : (
         <LoginForm />

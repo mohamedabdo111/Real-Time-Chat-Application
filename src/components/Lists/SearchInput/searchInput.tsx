@@ -1,9 +1,10 @@
 "use client";
 import { Minus, Plus, Search } from "lucide-react";
 import React, { useRef, useState } from "react";
+import Modal from "./ModalGetAllUsers";
 
 const SearchInput = () => {
-  const [add, setAdd] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const Ref = useRef<HTMLInputElement>(null);
 
   const handleClickSearch = () => {
@@ -26,10 +27,19 @@ const SearchInput = () => {
 
       <div
         className="searchParent p-2 rounded-xl cursor-pointer"
-        onClick={() => setAdd((prev) => !prev)}
+        onClick={() => setShowModal(true)}
       >
-        {add ? <Plus /> : <Minus />}
+        {!showModal ? <Plus /> : <Minus />}
       </div>
+
+      {showModal && (
+        <Modal
+          title="Get All Users"
+          isOpen={showModal}
+          setOpen={setShowModal}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

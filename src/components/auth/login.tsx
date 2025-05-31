@@ -1,20 +1,29 @@
 "use client";
 import React, { useState } from "react";
 import { User, Key, Eye, EyeOff, Mail } from "lucide-react";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
   });
 
-  // Register form states
-  const [username, setUsername] = useState("");
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [RegisterState, setRegisterState] = useState({
+    username: "",
+    email: "",
+    Registerpassword: "",
+    confirmPassword: "",
+  });
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,21 +33,67 @@ const LoginForm = () => {
     }));
   };
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Login attempt:", loginState);
-    // Handle login logic here
+  const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setRegisterState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register attempt:", {
-      username,
-      registerEmail,
-      registerPassword,
-      confirmPassword,
-    });
-    // Handle register logic here
+    setLoading(true);
+    try {
+      const res = await signInWithEmailAndPassword(
+        auth,
+        loginState.email,
+        loginState.password
+      );
+      setLoginState({
+        email: "",
+        password: "",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        RegisterState.email,
+        RegisterState.Registerpassword
+      );
+
+      await setDoc(doc(db, "users", res.user.uid), {
+        userName: RegisterState.username,
+        email: RegisterState.email,
+        uid: res.user.uid,
+        blocked: [],
+        createdAt: new Date().toISOString(),
+      });
+
+      await setDoc(doc(db, "userChats", res.user.uid), {
+        chats: [],
+      });
+
+      setRegisterState({
+        username: "",
+        email: "",
+        Registerpassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -115,9 +170,12 @@ const LoginForm = () => {
               {/* Login Button */}
               <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-700"
+                disabled={loading}
+                className={`w-full bg-blue-500 hover:bg-blue-600 ${
+                  loading && "opacity-50 cursor-not-allowed"
+                } text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
               >
-                Sign In
+                {loading ? "Loading..." : "Login"}
               </button>
 
               {/* Social Login Buttons */}
@@ -182,8 +240,9 @@ const LoginForm = () => {
                   <input
                     id="username"
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    name="username"
+                    value={RegisterState.username}
+                    onChange={handleRegisterChange}
                     placeholder="Enter your username"
                     className="w-full pl-10 pr-3 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
@@ -204,8 +263,9 @@ const LoginForm = () => {
                   <input
                     id="registerEmail"
                     type="email"
-                    value={registerEmail}
-                    onChange={(e) => setRegisterEmail(e.target.value)}
+                    name="email"
+                    value={RegisterState.email}
+                    onChange={handleRegisterChange}
                     placeholder="Enter your email"
                     className="w-full pl-10 pr-3 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
@@ -224,10 +284,11 @@ const LoginForm = () => {
                 <div className="relative">
                   <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
-                    id="registerPassword"
+                    id="Registerpassword"
+                    name="Registerpassword"
                     type={showPassword ? "text" : "password"}
-                    value={registerPassword}
-                    onChange={(e) => setRegisterPassword(e.target.value)}
+                    value={RegisterState.Registerpassword}
+                    onChange={handleRegisterChange}
                     placeholder="Enter your password"
                     className="w-full pl-10 pr-10 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
@@ -258,9 +319,10 @@ const LoginForm = () => {
                   <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     id="confirmPassword"
+                    name="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={RegisterState.confirmPassword}
+                    onChange={handleRegisterChange}
                     placeholder="Confirm your password"
                     className="w-full pl-10 pr-10 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
@@ -282,9 +344,12 @@ const LoginForm = () => {
               {/* Register Button */}
               <button
                 type="submit"
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-700"
+                disabled={loading}
+                className={`w-full bg-green-500 hover:bg-green-600 ${
+                  loading && "opacity-50 cursor-not-allowed"
+                }  text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
               >
-                Create Account
+                {loading ? "Loading..." : "Register"}
               </button>
             </form>
           </div>

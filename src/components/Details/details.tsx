@@ -1,7 +1,12 @@
+import { auth } from "@/lib/firebase";
 import React from "react";
 
-const DetailsPage = () => {
-  return <div className=" flex-1">details</div>;
+const Details = () => {
+  return (
+    <div className=" flex-1">
+      <button onClick={() => auth.signOut()}>logout</button>
+    </div>
+  );
 };
 
-export default DetailsPage;
+export default Details;
