@@ -15,7 +15,8 @@ import {
 import { db } from "@/lib/firebase";
 import { UseCurrentUser } from "@/lib/useState";
 import { IUser, IUSerSearch, IUserState } from "@/interfaces/interfaces";
-
+import Image from "next/image";
+import usreProfile from "../../../../public/person.png";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -90,15 +91,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, setOpen }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black opacity-70 transition-opacity"
+        className="fixed inset-0 bg-black opacity-60 transition-opacity"
         onClick={onClose}
       ></div>
 
       {/* Modal */}
-      <div className="relative bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4 shadow-xl transform transition-all border border-gray-700">
+      <div className="relative  rounded-lg bg-white p-6 w-full max-w-md mx-4 shadow-xl transform transition-all border border-gray-700">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <h3 className="text-lg font-semibold ">{title}</h3>
           <button
             type="button"
             onClick={onClose}
@@ -120,24 +121,28 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, setOpen }) => {
             ></input>
             <button
               type="submit"
-              className="text-gray-400 hover:text-gray-200 flex-1 rounded-full transition-colors cursor-pointer capitalize border py-1 px-4 border-gray-200 "
+              className="text-primary-color bg-blue-100   hover:bg-gray-100 flex-1 rounded-full transition-colors cursor-pointer capitalize border py-1 px-4 border-gray-200 "
             >
               search
             </button>
           </form>
 
           <div className="flex flex-col gap-3">
-            <p className="font-semibold text-xl">Users</p>
+            <p className="font-semibold text-lg">Search Result</p>
 
-            {/* user dev */}
             {user && Object.keys(user).length > 0 && (
               <div className=" flex justify-between">
                 <div className="flex gap-3 items-center">
-                  <User2 />
+                  <Image
+                    src={usreProfile}
+                    width={40}
+                    height={40}
+                    alt="avatar"
+                  ></Image>
                   <p>{(user as IUser).userName}</p>
                 </div>
                 <button
-                  className="text-gray-400 hover:text-gray-200 rounded-full transition-colors cursor-pointer capitalize border py-1 px-4 border-gray-200"
+                  className="text-primary-color bg-blue-100 hover:bg-gray-100 rounded-full transition-colors cursor-pointer capitalize border py-1 px-6 border-gray-200"
                   type="button"
                   onClick={createChat}
                   disabled={createClick && loading}

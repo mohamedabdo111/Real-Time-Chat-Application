@@ -14,7 +14,27 @@ export interface IUser {
 export interface IUSerSearch {
   blocked: string[];
   userName: string;
+  isTyping: boolean;
+  typingUser: string;
   uid: string;
   email: string;
   createdAt: string;
+}
+
+export interface IMessageChat {
+  senderId: string;
+  text: string;
+  createdAt: number;
+  id: number;
+}
+
+export interface IChatList {
+  chatId: string;
+  lastMessage: string;
+  receiverId: string;
+  updateedAt: number;
+  isSeen: boolean;
+  isTypeing: boolean;
+  senderId: string;
+  userData: IUSerSearch;
 }

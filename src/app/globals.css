@@ -1,16 +1,11 @@
 @import "tailwindcss";
 
 :root {
+  --PrimaryColor: #615ef0;
+  --secondaryColor: #efeffd;
   --background: #ffffff;
   --foreground: #171717;
 }
-
-/* @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-} */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -22,17 +17,29 @@
 body {
   /* background: var(--background); */
   /* background-image: url("../../public/bgChatTwo.jpg"); */
-  background-color: rgba(17, 25, 40, 0.75);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
-  backdrop-filter: blur(10px) saturate(180%);
-  background-size: cover;
-  background-position: center;
-  color: var(--foreground);
+  /* background-color: rgba(17, 25, 40, 0.75); */
+  /* -webkit-backdrop-filter: blur(10px) saturate(180%); */
+  /* backdrop-filter: blur(10px) saturate(180%); */
+  /* background-size: cover; */
+  /* background-position: center; */
+  /* color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.text-primary-color {
+  color: var(--PrimaryColor);
+}
+
+.bg-secondary-color {
+  background-color: var(--secondaryColor);
+}
+
+.bg-primary-color {
+  background-color: var(--PrimaryColor);
 }
 
 .app {

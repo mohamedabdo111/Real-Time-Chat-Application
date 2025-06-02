@@ -1,7 +1,7 @@
 import React from "react";
-import UserInfo from "./UserInfo/userInfo";
-import UserList from "./UserList/userList";
-import SearchInput from "./SearchInput/searchInput";
+import UserInfo from "./listComponents/userInfo";
+import UserList from "./listComponents/userList";
+import SearchInput from "./listComponents/searchInput";
 
 const ListUsers = () => {
   return (

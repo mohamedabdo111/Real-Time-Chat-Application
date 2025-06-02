@@ -61,6 +61,8 @@ const ChatFooter = () => {
   const handleSendMessage = async () => {
     const chatCollection = collection(db, "chats");
     const chatRef = doc(chatCollection, chatId);
+    console.log(chatId, "chatId");
+    console.log("userChat", userChat);
     if (text === "") return;
     try {
       await updateDoc(chatRef, {
@@ -69,6 +71,7 @@ const ChatFooter = () => {
           senderId: currentUser?.uid,
           text,
           createdAt: Date.now(),
+          isSeen: false,
         }),
       });
 
@@ -88,7 +91,7 @@ const ChatFooter = () => {
             userData.chats[getChatIndex].updateedAt = Date.now();
             userData.chats[getChatIndex].isSeen =
               id === currentUser?.uid ? true : false;
-
+            userData.chats[getChatIndex].senderId = currentUser?.uid;
             await updateDoc(userChatRef, {
               chats: userData.chats,
             });
