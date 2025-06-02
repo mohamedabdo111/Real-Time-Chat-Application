@@ -73,7 +73,7 @@ const UserList = () => {
       {chatList.map((chat: IChatList, index) => {
         return (
           <div
-            className={`flex items-center gap-4 flex-1 px-4 py-2 cursor-pointer hover:bg-gray-100 rounded-xl ${
+            className={`flex items-center gap-4 flex-1 px-4 py-2 my-2 cursor-pointer hover:bg-gray-100 rounded-xl ${
               chat.senderId !== currentUser.uid && !chat.isSeen && "bg-gray-100"
             }`}
             key={index}

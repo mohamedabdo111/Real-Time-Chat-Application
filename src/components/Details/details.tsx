@@ -3,7 +3,7 @@ import React from "react";
 
 const Details = () => {
   return (
-    <div className=" flex-1">
+    <div className=" flex-1 p-4">
       <button onClick={() => auth.signOut()}>logout</button>
     </div>
   );

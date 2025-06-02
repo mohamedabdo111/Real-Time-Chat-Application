@@ -6,7 +6,8 @@ import { UseCurrentUser } from "@/lib/useState";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { CircleUser } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-
+import Image from "next/image";
+import usreProfile from "../../../../public/person.png";
 const ChatContent = () => {
   const DivRef = useRef<HTMLDivElement>(null);
   const { chatId } = useCurrentChat() as any;
@@ -38,10 +39,15 @@ const ChatContent = () => {
       {/* first user */}
       {chatMessages.map((item: IMessageChat, index) => {
         return item.senderId !== currentUser.uid ? (
-          <div className="flex gap-2 items-start" key={index}>
-            <CircleUser width={40} height={40} />
-            <div className=" max-w-[70%] flex flex-col gap-2">
-              <div className="searchParent rounded-xl px-4 py-2">
+          <div className="flex gap-2 my-3 items-start" key={index}>
+            <Image
+              src={usreProfile}
+              width={40}
+              height={40}
+              alt="avatar"
+            ></Image>
+            <div className=" max-w-[70%] flex flex-col gap-1 ">
+              <div className="bg-gray-200 rounded-xl px-4 py-2">
                 {item.text}
               </div>
 
@@ -49,10 +55,10 @@ const ChatContent = () => {
             </div>
           </div>
         ) : (
-          <div className="flex gap-2 items-start justify-end" key={index}>
+          <div className="flex gap-2 my-3 items-start justify-end" key={index}>
             {/* <CircleUser width={40} height={40} /> */}
-            <div className=" max-w-[70%] flex flex-col gap-2">
-              <div className="bg-blue-500  rounded-xl px-4 py-2">
+            <div className=" max-w-[70%] flex flex-col gap-1 items-end">
+              <div className="bg-primary-color text-white  rounded-xl px-4 py-2">
                 {item.text}
               </div>
 
@@ -62,36 +68,6 @@ const ChatContent = () => {
         );
       })}
 
-      {/* second user  */}
-
-      {/* <div className="flex gap-2 items-start justify-end">
-       
-        <div className=" max-w-[70%] flex flex-col gap-2">
-          <div className="bg-blue-500  rounded-xl px-4 py-2">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur
-            voluptatem sequi quisquam hic repellat quasi aut dolorum autem vel,
-            explicabo architecto voluptatibus, vero totam maiores numquam
-            laboriosam quibusdam porro optio?
-          </div>
-
-          <p className="text-sm">1 minute</p>
-        </div>
-      </div> */}
-      {/* <div className="flex gap-2 items-start justify-end">
-       
-        <div className=" max-w-[70%] flex flex-col gap-2">
-          <div className="bg-blue-500  rounded-xl px-4 py-2">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur
-            voluptatem sequi quisquam hic repellat quasi aut dolorum autem vel,
-            explicabo architecto voluptatibus, vero totam maiores numquam
-            laboriosam quibusdam porro optio?
-          </div>
-
-          <p className="text-sm">1 minute</p>
-        </div>
-      </div> */}
-
-      {/* auto scroll when i open the chat */}
       <div ref={DivRef}></div>
     </div>
   );

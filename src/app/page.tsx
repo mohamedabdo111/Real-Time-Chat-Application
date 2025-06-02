@@ -31,7 +31,7 @@ const Home = () => {
       </div>
     );
   return (
-    <div className="w-full h-full pb app  p-4 flex gap-3 ">
+    <div className="w-full h-full pb app flex gap-3 ">
       {currentUser ? (
         <>
           <ListUsers />

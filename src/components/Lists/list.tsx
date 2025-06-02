@@ -5,7 +5,7 @@ import SearchInput from "./listComponents/searchInput";
 
 const ListUsers = () => {
   return (
-    <div className=" flex-1 border-r-[1px] border-gray-400 pr-2 overflow-auto">
+    <div className=" flex-1 border-r-[1px] border-gray-400 pr-2 overflow-auto p-4">
       <UserInfo />
       <SearchInput />
       <UserList />

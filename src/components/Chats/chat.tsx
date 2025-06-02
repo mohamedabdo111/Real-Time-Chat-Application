@@ -4,7 +4,7 @@ import ChatContent from "./chatComponents/chatContent";
 import ChatFooter from "./chatComponents/chatFooter";
 const ChatMessages = () => {
   return (
-    <div className="flex flex-col border-r-[1px] border-gray-400 pr-2 overflow-auto flex-2">
+    <div className="flex flex-col border-r-[1px] border-gray-400 pr-2 overflow-auto flex-2 py-4">
       <ChatHeader />
       <ChatContent />
       <ChatFooter />

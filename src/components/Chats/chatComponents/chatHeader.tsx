@@ -20,7 +20,7 @@ const ChatHeader = () => {
   }, []);
 
   return (
-    <div className="flex justify-between items-center border-b-[1px] border-gray-400 pb-2 ">
+    <div className="flex justify-between items-center border-b-[1px] border-gray-300 pb-2 ">
       <div className="flex gap-2 items-center">
         <CircleUser width={40} height={40} />
         <div className="flex flex-col ">

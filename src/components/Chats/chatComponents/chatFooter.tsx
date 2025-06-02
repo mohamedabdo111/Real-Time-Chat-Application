@@ -10,7 +10,14 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Camera, ImagePlus, Mic, SmilePlus } from "lucide-react";
+import {
+  Camera,
+  ImagePlus,
+  Mic,
+  Paperclip,
+  Send,
+  SmilePlus,
+} from "lucide-react";
 import React, { useEffect } from "react";
 
 const ChatFooter = () => {
@@ -58,11 +65,11 @@ const ChatFooter = () => {
     }
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (e : React.FormEvent) => {
+    e.preventDefault();
     const chatCollection = collection(db, "chats");
     const chatRef = doc(chatCollection, chatId);
-    console.log(chatId, "chatId");
-    console.log("userChat", userChat);
+
     if (text === "") return;
     try {
       await updateDoc(chatRef, {
@@ -92,79 +99,63 @@ const ChatFooter = () => {
             userData.chats[getChatIndex].isSeen =
               id === currentUser?.uid ? true : false;
             userData.chats[getChatIndex].senderId = currentUser?.uid;
-            await updateDoc(userChatRef, {
-              chats: userData.chats,
-            });
-          }
 
-          // userData?[getChatIndex].lastMessage = text;
-          // userData?.chats[getChatIndex].updateedAt = Date.now();
+            try {
+              await updateDoc(userChatRef, {
+                chats: userData.chats,
+              });
+              setText("");
+            } catch (error) {
+              console.log(error);
+            }
+          }
         }
       });
-
-      setText("");
     } catch (error) {
       console.log("errorrr", error);
     }
   };
 
   return (
-    <div className="border-t-[1px] border-gray-400 pt-2 flex items-center justify-between gap-4">
+    <div className="border-t-[1px] border-gray-300 pt-2 flex items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <ImagePlus />
-        <Camera />
-        <Mic />
+        <Paperclip className="text-gray-400" />
       </div>
-      <div className="flex-2">
+      <form onSubmit={handleSendMessage} className="flex-2 relative">
         <input
           type="text"
           placeholder="Type a message"
-          className="w-full searchParent gap-2 px-4 py-2 rounded-xl flex-1 border-0 outline-0 searchParent"
+          className="w-full border-[2px] border-gray-300 gap-2 px-4 py-2 rounded-xl flex-1  outline-0 relative "
           onChange={onChangeInput}
           value={text}
         />
-      </div>
 
-      <div className="flex items-center gap-4">
-        <div className="relative">
-          <SmilePlus
-            className="cursor-pointer relative"
-            onClick={() => setShow((prev) => !prev)}
-          />
-
-          <div className="absolute bottom-[50px] right-0 ">
-            <EmojiPicker
-              open={show}
-              onEmojiClick={(e) => setText((prev) => prev + e.emoji)}
+        <div className="flex items-center gap-4 absolute right-5 top-[50%] translate-y-[-50%]">
+          <div className="relative">
+            <SmilePlus
+              className="cursor-pointer relative text-gray-400"
+              onClick={() => setShow((prev) => !prev)}
             />
-          </div>
-        </div>
 
-        <button
-          className={`gap-2 px-4 py-2 rounded-xl   ${
-            text === ""
-              ? "cursor-not-allowed bg-blue-500 opacity-30 hover:opacity-15"
-              : "cursor-pointer bg-blue-500"
-          }`}
-          type="submit"
-          onClick={handleSendMessage}
-          disabled={text === ""}
-        >
-          Send
-        </button>
-        {/* <button
-          className={`gap-2 px-4 py-2 rounded-xl   ${
-            text === ""
-              ? "cursor-not-allowed bg-blue-500 opacity-30 hover:opacity-15"
-              : "cursor-pointer bg-blue-500"
-          }`}
-          type="submit"
-          onClick={updateMessage}
-          disabled={text === ""}
-        >
-          update
-        </button> */}
-      </div>
+            <div className="absolute bottom-[50px] right-0 ">
+              <EmojiPicker
+                open={show}
+                onEmojiClick={(e) => setText((prev) => prev + e.emoji)}
+              />
+            </div>
+          </div>
+
+          <button type="submit" disabled={text === ""}>
+            <Send
+              className={`gap-2    ${
+                text === ""
+                  ? "cursor-not-allowed text-primary-color hover:opacity-50 "
+                  : "cursor-pointer text-primary-color"
+              }`}
+            />
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
