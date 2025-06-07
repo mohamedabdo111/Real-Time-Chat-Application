@@ -68,6 +68,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, setOpen }) => {
           lastMessage: "",
           receiverId: user?.uid,
           updateedAt: Date.now(),
+          isSeen: true,
         }),
       });
       await updateDoc(doc(userChatsRef, user?.uid), {

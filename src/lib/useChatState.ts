@@ -1,13 +1,27 @@
 import { create } from "zustand";
-import { UseCurrentUser } from "./useState";
+import { ICurrentChat } from "@/interfaces/interfaces";
 
-export const useCurrentChat = create((set) => ({
+export const useCurrentChat = create<ICurrentChat>((set) => ({
   chatId: null,
   userChat: null,
   isTyping: false,
   isCurrentUserBlocked: false,
-  isReceivedUserBlockked: false,
+  isReceivedUserBlocked: false,
   chatLoading: true,
+  chatBetweenTwoUsers: null,
+
+  logoutState: () => {
+    set({
+      chatId: null,
+      userChat: null,
+      isTyping: false,
+      isCurrentUserBlocked: false,
+      isReceivedUserBlocked: false,
+      chatLoading: true,
+      chatBetweenTwoUsers: null,
+    });
+  },
+
   ChatTypeState: () => {
     set({
       isTyping: true,
@@ -18,32 +32,24 @@ export const useCurrentChat = create((set) => ({
       isTyping: false,
     });
   },
+  blockUser: () => {
+    set((state: any) => ({
+      ...state,
+      isReceivedUserBlocked: !state.isReceivedUserBlocked,
+    }));
+  },
   fetchCurrentChat: (chatId: string, user: any) => {
-    const currentUsesr: any = UseCurrentUser?.getState()?.currentUser as any;
+    // const currentUsesr = UseCurrentUser?.getState() as any ;
+    // const currentUsesrData = currentUsesr?.currentUser as any;
+    set({
+      chatId,
+      userChat: user,
+    });
+  },
 
-    // If user blocked
-    if (currentUsesr.blocked.includes(currentUsesr.uid)) {
-      set({
-        chatId,
-        userChat: null,
-        isCurrentUserBlocked: true,
-        isReceivedUserBlockked: false,
-      });
-      // If recevier blocked
-    } else if (currentUsesr.blocked.includes(user.id)) {
-      set({
-        chatId,
-        userChat: null,
-        isCurrentUserBlocked: false,
-        isReceivedUserBlockked: true,
-      });
-    } else {
-      set({
-        chatId,
-        userChat: user,
-        isCurrentUserBlocked: false,
-        isReceivedUserBlockked: false,
-      });
-    }
+  fetchUserChat: (chatBetweenTwoUsers: any) => {
+    set({
+      chatBetweenTwoUsers,
+    });
   },
 }));

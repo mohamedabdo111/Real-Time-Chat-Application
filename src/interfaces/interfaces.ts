@@ -37,4 +37,18 @@ export interface IChatList {
   isTypeing: boolean;
   senderId: string;
   userData: IUSerSearch;
+  blocked?: string;
+}
+
+export interface ICurrentChat {
+  chatId: string | null;
+  userChat: IUser | null;
+  isTyping: boolean;
+  isCurrentUserBlocked: boolean;
+  isReceivedUserBlocked: boolean;
+  chatLoading: boolean;
+  chatBetweenTwoUsers: IChatList | null;
+  blockUser: () => void;
+  logoutState: () => void;
+  fetchCurrentChat: (chatId: string, user: IUser) => void;
 }

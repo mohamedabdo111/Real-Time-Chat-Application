@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 const ChatHeader = () => {
   const [chatHeader, setChatHeader] = useState<any | null>(null);
   const { userChat } = useCurrentChat() as any;
+
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "users", userChat.uid), (doc) => {
+    const unsub = onSnapshot(doc(db, "users", userChat?.uid), (doc) => {
       setChatHeader(doc.data());
     });
 

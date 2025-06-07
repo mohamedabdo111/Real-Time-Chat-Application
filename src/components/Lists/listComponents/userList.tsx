@@ -8,10 +8,11 @@ import { CircleUser } from "lucide-react";
 import React, { useEffect } from "react";
 import Image from "next/image";
 import usreProfile from "../../../../public/person.png";
+import { formatRelativeTime } from "@/lib/FormatDate";
 const UserList = () => {
   const [chatList, setChatList] = React.useState<any[]>([]);
   const { currentUser } = UseCurrentUser() as IUserState;
-  const { fetchCurrentChat } = useCurrentChat() as any;
+  const { fetchCurrentChat, fetchUserChat } = useCurrentChat() as any;
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -20,7 +21,7 @@ const UserList = () => {
         if (response.exists()) {
           const DataArray = response.data().chats;
 
-          const promisess = DataArray.map(async (item: any) => {
+          const promisess = DataArray?.map(async (item: any) => {
             const user = await getDoc(doc(db, "users", item.receiverId));
             const userData = user.data() as any;
             return {
@@ -30,8 +31,10 @@ const UserList = () => {
           });
 
           const result = await Promise.all(promisess);
+
           result.sort((a: any, b: any) => b.updateedAt - a.updateedAt);
           setChatList(result);
+          await fetchUserChat(result);
         }
       }
     );
@@ -53,7 +56,6 @@ const UserList = () => {
     );
 
     if (allChats.length > 0) {
-      console.log(allChats[getChatIndex], "allChats[getChatIndex]");
       allChats[getChatIndex].isSeen = true;
       const chatRef = doc(db, "userChats", currentUser.uid);
 
@@ -88,10 +90,19 @@ const UserList = () => {
             <div className="flex flex-col flex-1 justify-end">
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold">{chat.userData.userName}</h1>
-                <p className="text-gray-500">12m</p>
+                {chat.lastMessage !== "" && (
+                  <p className="text-gray-500">
+                    {formatRelativeTime(chat?.updateedAt)}
+                  </p>
+                )}
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-500 ">{chat.lastMessage}</span>
+                <div>
+                  <span>
+                    {chat.senderId === currentUser.uid ? "You: " : "him: "}
+                  </span>
+                  <span className="text-gray-500 ">{chat.lastMessage}</span>
+                </div>
                 {chat.senderId !== currentUser.uid && !chat.isSeen && (
                   <span
                     className={` bg-primary-color  text-white px-[13px] py-1 rounded-full`}

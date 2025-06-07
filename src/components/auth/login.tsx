@@ -103,8 +103,8 @@ const LoginForm = () => {
         <div className="w-[500px]">
           {/* Header */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-400">Sign in to your account</p>
+            <h1 className="text-2xl font-bold   mb-2">Welcome Back</h1>
+            <p className=" ">Sign in to your account</p>
           </div>
 
           {/* Login Form */}
@@ -112,14 +112,11 @@ const LoginForm = () => {
             <form onSubmit={handleLoginSubmit} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="text-sm font-medium text-gray-200"
-                >
+                <label htmlFor="email" className="text-sm font-medium ">
                   Email
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="email"
                     type="email"
@@ -127,7 +124,7 @@ const LoginForm = () => {
                     value={loginState.email}
                     onChange={handleLoginChange}
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-3 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                    className="w-full pl-10 pr-3 py-2   border border-gray-500  placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
                     required
                   />
                 </div>
@@ -135,14 +132,11 @@ const LoginForm = () => {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="password"
-                  className="text-sm font-medium text-gray-200"
-                >
+                <label htmlFor="password" className="text-sm font-medium  ">
                   Password
                 </label>
                 <div className="relative">
-                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="password"
                     name="password"
@@ -150,13 +144,13 @@ const LoginForm = () => {
                     value={loginState.password}
                     onChange={handleLoginChange}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-10 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
+                    className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2   hover:  transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -171,9 +165,9 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-blue-500 hover:bg-blue-600 ${
+                className={`w-full bg-primary-color hover:bg-secondary-color ${
                   loading && "opacity-50 cursor-not-allowed"
-                } text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
+                }   font-medium py-2.5 px-4 rounded-md text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
               >
                 {loading ? "Loading..." : "Login"}
               </button>
@@ -182,19 +176,19 @@ const LoginForm = () => {
               <div className="space-y-3">
                 <button
                   type="button"
-                  className="w-full bg-gray-600 border border-gray-500 text-white hover:bg-gray-500 py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="w-full   border border-gray-500   hover:bg-gray-500 py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 >
                   Continue with Google
                 </button>
                 <button
                   type="button"
-                  className="w-full bg-gray-600 border border-gray-500 text-white hover:bg-gray-500 py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  className="w-full   border border-gray-500   hover:bg-gray-500 py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 >
                   Continue with GitHub
                 </button>
 
                 <div className="mt-6 text-center block   lg:hidden ">
-                  <p className="text-gray-400 text-sm">
+                  <p className="  text-sm">
                     Don't have an account?{" "}
                     <a
                       href="#"
@@ -218,10 +212,8 @@ const LoginForm = () => {
         <div className="w-[500px] hidden lg:block">
           {/* Header */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-white mb-2">
-              Create Account
-            </h1>
-            <p className="text-gray-400">Sign up for a new account</p>
+            <h1 className="text-2xl font-bold   mb-2">Create Account</h1>
+            <p className=" ">Sign up for a new account</p>
           </div>
 
           {/* Register Form */}
@@ -229,14 +221,11 @@ const LoginForm = () => {
             <form onSubmit={handleRegisterSubmit} className="space-y-6">
               {/* Username Field */}
               <div className="space-y-2">
-                <label
-                  htmlFor="username"
-                  className="text-sm font-medium text-gray-200"
-                >
+                <label htmlFor="username" className="text-sm font-medium  ">
                   Username
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="username"
                     type="text"
@@ -244,7 +233,7 @@ const LoginForm = () => {
                     value={RegisterState.username}
                     onChange={handleRegisterChange}
                     placeholder="Enter your username"
-                    className="w-full pl-10 pr-3 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                    className="w-full pl-10 pr-3 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
                   />
                 </div>
@@ -254,12 +243,12 @@ const LoginForm = () => {
               <div className="space-y-2">
                 <label
                   htmlFor="registerEmail"
-                  className="text-sm font-medium text-gray-200"
+                  className="text-sm font-medium  "
                 >
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="registerEmail"
                     type="email"
@@ -267,7 +256,7 @@ const LoginForm = () => {
                     value={RegisterState.email}
                     onChange={handleRegisterChange}
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-3 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                    className="w-full pl-10 pr-3 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
                   />
                 </div>
@@ -277,12 +266,12 @@ const LoginForm = () => {
               <div className="space-y-2">
                 <label
                   htmlFor="registerPassword"
-                  className="text-sm font-medium text-gray-200"
+                  className="text-sm font-medium  "
                 >
                   Password
                 </label>
                 <div className="relative">
-                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="Registerpassword"
                     name="Registerpassword"
@@ -290,13 +279,13 @@ const LoginForm = () => {
                     value={RegisterState.Registerpassword}
                     onChange={handleRegisterChange}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-10 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                    className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2   hover:  transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -311,12 +300,12 @@ const LoginForm = () => {
               <div className="space-y-2">
                 <label
                   htmlFor="confirmPassword"
-                  className="text-sm font-medium text-gray-200"
+                  className="text-sm font-medium  "
                 >
                   Confirm Password
                 </label>
                 <div className="relative">
-                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4  " />
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -324,13 +313,13 @@ const LoginForm = () => {
                     value={RegisterState.confirmPassword}
                     onChange={handleRegisterChange}
                     placeholder="Confirm your password"
-                    className="w-full pl-10 pr-10 py-2 bg-gray-600 border border-gray-500 text-white placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                    className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2   hover:  transition-colors"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -347,7 +336,7 @@ const LoginForm = () => {
                 disabled={loading}
                 className={`w-full bg-green-500 hover:bg-green-600 ${
                   loading && "opacity-50 cursor-not-allowed"
-                }  text-white font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
+                }    font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
               >
                 {loading ? "Loading..." : "Register"}
               </button>

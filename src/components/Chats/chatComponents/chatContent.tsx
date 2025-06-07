@@ -3,14 +3,15 @@ import { IMessageChat } from "@/interfaces/interfaces";
 import { db } from "@/lib/firebase";
 import { useCurrentChat } from "@/lib/useChatState";
 import { UseCurrentUser } from "@/lib/useState";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { CircleUser } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import usreProfile from "../../../../public/person.png";
+import { formatRelativeTime } from "@/lib/FormatDate";
 const ChatContent = () => {
   const DivRef = useRef<HTMLDivElement>(null);
-  const { chatId } = useCurrentChat() as any;
+  const { chatId, chatBetweenTwoUsers, userChat } = useCurrentChat() as any;
   const { currentUser } = UseCurrentUser() as any;
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -18,15 +19,14 @@ const ChatContent = () => {
     if (DivRef.current) {
       DivRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, []);
+  }, [chatId, chatMessages]);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "chats", chatId), (doc) => {
-      console.log("current chattt", doc.data());
       if (doc.exists()) {
         const chatData = doc.data();
-        const cahtMessage = chatData?.messages;
-        setChatMessages(cahtMessage);
+        const chatMessage = chatData?.messages;
+        setChatMessages(chatMessage);
       }
     });
 
@@ -34,6 +34,26 @@ const ChatContent = () => {
       unsub();
     };
   }, [chatId]);
+
+  useEffect(() => {
+    const setUserSeen = async () => {
+      try {
+        const findChatBetweenTwoUsersIndex = chatBetweenTwoUsers.findIndex(
+          (c: any) => c.chatId === chatId
+        );
+        if (chatBetweenTwoUsers[findChatBetweenTwoUsersIndex]) {
+          chatBetweenTwoUsers[findChatBetweenTwoUsersIndex].isSeen = true;
+        }
+
+        await updateDoc(doc(db, "userChats", currentUser?.uid), {
+          chats: chatBetweenTwoUsers,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    setUserSeen();
+  });
   return (
     <div className="flex-2 py-3">
       {/* first user */}
@@ -51,7 +71,7 @@ const ChatContent = () => {
                 {item.text}
               </div>
 
-              <p className="text-sm">1 minute</p>
+              <p className="text-sm">{formatRelativeTime(item.createdAt)}</p>
             </div>
           </div>
         ) : (
@@ -62,7 +82,7 @@ const ChatContent = () => {
                 {item.text}
               </div>
 
-              <p className="text-sm">1 minute</p>
+              <p className="text-sm">{formatRelativeTime(item.createdAt)}</p>
             </div>
           </div>
         );

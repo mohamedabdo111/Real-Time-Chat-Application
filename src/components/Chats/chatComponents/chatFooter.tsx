@@ -10,24 +10,16 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import {
-  Camera,
-  ImagePlus,
-  Mic,
-  Paperclip,
-  Send,
-  SmilePlus,
-} from "lucide-react";
+import { Paperclip, Send, SmilePlus } from "lucide-react";
 import React, { useEffect } from "react";
 
 const ChatFooter = () => {
   const [show, setShow] = React.useState(false);
   const { currentUser } = UseCurrentUser() as any;
-  const { chatId, userChat, ChatTypeState, chatTypeStop } =
-    useCurrentChat() as any;
+  const { chatId, userChat } = useCurrentChat() as any;
 
   const [text, setText] = React.useState("");
-  const userIDs = [currentUser?.uid, userChat.uid];
+  const userIDs = [currentUser?.uid, userChat?.uid];
 
   useEffect(() => {
     if (text === "") {
@@ -65,7 +57,7 @@ const ChatFooter = () => {
     }
   };
 
-  const handleSendMessage = async (e : React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     const chatCollection = collection(db, "chats");
     const chatRef = doc(chatCollection, chatId);
@@ -145,14 +137,16 @@ const ChatFooter = () => {
             </div>
           </div>
 
-          <button type="submit" disabled={text === ""}>
-            <Send
-              className={`gap-2    ${
-                text === ""
-                  ? "cursor-not-allowed text-primary-color hover:opacity-50 "
-                  : "cursor-pointer text-primary-color"
-              }`}
-            />
+          <button name="submit" type="submit" disabled={text === ""}>
+            {
+              <Send
+                className={`gap-2    ${
+                  text === ""
+                    ? "cursor-not-allowed text-primary-color hover:opacity-50 "
+                    : "cursor-pointer text-primary-color"
+                }`}
+              />
+            }
           </button>
         </div>
       </form>
