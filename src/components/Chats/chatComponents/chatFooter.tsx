@@ -1,7 +1,7 @@
 "use client";
 import { db } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { UseCurrentUser } from "@/zustand/useState";
 import EmojiPicker from "emoji-picker-react";
 import {
   arrayUnion,
@@ -17,7 +17,6 @@ const ChatFooter = () => {
   const [show, setShow] = React.useState(false);
   const { currentUser } = UseCurrentUser() as any;
   const { chatId, userChat } = useCurrentChat() as any;
-
   const [text, setText] = React.useState("");
   const userIDs = [currentUser?.uid, userChat?.uid];
 
@@ -105,6 +104,8 @@ const ChatFooter = () => {
       });
     } catch (error) {
       console.log("errorrr", error);
+    } finally {
+      setShow(false);
     }
   };
 

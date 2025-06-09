@@ -1,8 +1,8 @@
 "use client";
 import { IMessageChat } from "@/interfaces/interfaces";
 import { db } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { UseCurrentUser } from "@/zustand/useState";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { CircleUser } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";

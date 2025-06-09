@@ -1,7 +1,7 @@
 import logOutHooks from "@/hooks/LogoutHooks";
 import { auth, db } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { UseCurrentUser } from "@/zustand/useState";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import Image from "next/image";
 import React from "react";

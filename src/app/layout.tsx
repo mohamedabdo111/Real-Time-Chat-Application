@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Metrophobic } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const metrophobic = Metrophobic({
   weight: "400", // or other weights if available
@@ -30,7 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" bbai-tooltip-injected="true">
-      <body className={`${metrophobic.className} antialiased`}>{children}</body>
+      <body className={`${metrophobic.className} antialiased`}>
+        {children}
+        <Toaster position="top-right" reverseOrder={false} />
+      </body>
     </html>
   );
 }

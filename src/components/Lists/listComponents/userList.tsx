@@ -1,7 +1,7 @@
 import { IChatList, IUserState } from "@/interfaces/interfaces";
 import { db } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { UseCurrentUser } from "@/zustand/useState";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { get } from "http";
 import { CircleUser } from "lucide-react";
@@ -9,10 +9,12 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import usreProfile from "../../../../public/person.png";
 import { formatRelativeTime } from "@/lib/FormatDate";
+import { useHandleList } from "@/zustand/useHandleChatList";
 const UserList = () => {
   const [chatList, setChatList] = React.useState<any[]>([]);
   const { currentUser } = UseCurrentUser() as IUserState;
-  const { fetchCurrentChat, fetchUserChat } = useCurrentChat() as any;
+  const { fetchCurrentChat, fetchUserChat, chatId } = useCurrentChat() as any;
+  const { SelectAnotherChat } = useHandleList() as any;
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -60,6 +62,7 @@ const UserList = () => {
       const chatRef = doc(db, "userChats", currentUser.uid);
 
       try {
+        if (chatId) SelectAnotherChat();
         await updateDoc(chatRef, {
           chats: allChats,
         });
@@ -99,7 +102,11 @@ const UserList = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <span>
-                    {chat.senderId === currentUser.uid ? "You: " : "him: "}
+                    {chat.lastMessage !== ""
+                      ? chat.senderId === currentUser.uid
+                        ? "You: "
+                        : "him: "
+                      : ""}
                   </span>
                   <span className="text-gray-500 ">{chat.lastMessage}</span>
                 </div>

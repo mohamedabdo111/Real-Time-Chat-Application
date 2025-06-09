@@ -1,100 +1,28 @@
 "use client";
-import React, { useState } from "react";
 import { User, Key, Eye, EyeOff, Mail } from "lucide-react";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+
+import loginHook from "@/hooks/LoginHook";
 
 const LoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loginState, setLoginState] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [RegisterState, setRegisterState] = useState({
-    username: "",
-    email: "",
-    Registerpassword: "",
-    confirmPassword: "",
-  });
-
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginState((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setRegisterState((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await signInWithEmailAndPassword(
-        auth,
-        loginState.email,
-        loginState.password
-      );
-      setLoginState({
-        email: "",
-        password: "",
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        RegisterState.email,
-        RegisterState.Registerpassword
-      );
-
-      await setDoc(doc(db, "users", res.user.uid), {
-        userName: RegisterState.username,
-        email: RegisterState.email,
-        uid: res.user.uid,
-        blocked: [],
-        createdAt: new Date().toISOString(),
-      });
-
-      await setDoc(doc(db, "userChats", res.user.uid), {
-        chats: [],
-      });
-
-      setRegisterState({
-        username: "",
-        email: "",
-        Registerpassword: "",
-        confirmPassword: "",
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    showPassword,
+    setShowPassword,
+    showConfirmPassword,
+    setShowConfirmPassword,
+    loginState,
+    setLoginState,
+    loginError,
+    registerError,
+    loading,
+    setLoginError,
+    RegisterState,
+    setRegisterState,
+    validationLogin,
+    handleLoginChange,
+    handleRegisterChange,
+    handleLoginSubmit,
+    handleRegisterSubmit,
+  } = loginHook();
 
   return (
     <div className="w-full h-full flex items-center justify-center p-4">
@@ -103,7 +31,7 @@ const LoginForm = () => {
         <div className="w-[500px]">
           {/* Header */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold   mb-2">Welcome Back</h1>
+            <h1 className="text-2xl font-bold   mb-3">Welcome Back</h1>
             <p className=" ">Sign in to your account</p>
           </div>
 
@@ -111,7 +39,7 @@ const LoginForm = () => {
           <div className=" rounded-lg p-6 ">
             <form onSubmit={handleLoginSubmit} className="space-y-6">
               {/* Email Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label htmlFor="email" className="text-sm font-medium ">
                   Email
                 </label>
@@ -125,13 +53,14 @@ const LoginForm = () => {
                     onChange={handleLoginChange}
                     placeholder="Enter your email"
                     className="w-full pl-10 pr-3 py-2   border border-gray-500  placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
-                    required
+                    // required
                   />
                 </div>
+                <p className="text-red-500">{loginError.email}</p>
               </div>
 
               {/* Password Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label htmlFor="password" className="text-sm font-medium  ">
                   Password
                 </label>
@@ -145,7 +74,7 @@ const LoginForm = () => {
                     onChange={handleLoginChange}
                     placeholder="Enter your password"
                     className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400"
-                    required
+                    // required
                   />
                   <button
                     type="button"
@@ -159,6 +88,7 @@ const LoginForm = () => {
                     )}
                   </button>
                 </div>
+                <p className="text-red-500">{loginError.password}</p>
               </div>
 
               {/* Login Button */}
@@ -212,7 +142,7 @@ const LoginForm = () => {
         <div className="w-[500px] hidden lg:block">
           {/* Header */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold   mb-2">Create Account</h1>
+            <h1 className="text-2xl font-bold   mb-3">Create Account</h1>
             <p className=" ">Sign up for a new account</p>
           </div>
 
@@ -220,7 +150,7 @@ const LoginForm = () => {
           <div className=" rounded-lg p-6 ">
             <form onSubmit={handleRegisterSubmit} className="space-y-6">
               {/* Username Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label htmlFor="username" className="text-sm font-medium  ">
                   Username
                 </label>
@@ -234,13 +164,13 @@ const LoginForm = () => {
                     onChange={handleRegisterChange}
                     placeholder="Enter your username"
                     className="w-full pl-10 pr-3 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
-                    required
                   />
                 </div>
+                <p className="text-red-500">{registerError.username}</p>
               </div>
 
               {/* Register Email Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label
                   htmlFor="registerEmail"
                   className="text-sm font-medium  "
@@ -257,13 +187,13 @@ const LoginForm = () => {
                     onChange={handleRegisterChange}
                     placeholder="Enter your email"
                     className="w-full pl-10 pr-3 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
-                    required
                   />
                 </div>
+                <p className="text-red-500">{registerError.email}</p>
               </div>
 
               {/* Register Password Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label
                   htmlFor="registerPassword"
                   className="text-sm font-medium  "
@@ -280,7 +210,6 @@ const LoginForm = () => {
                     onChange={handleRegisterChange}
                     placeholder="Enter your password"
                     className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
-                    required
                   />
                   <button
                     type="button"
@@ -294,10 +223,11 @@ const LoginForm = () => {
                     )}
                   </button>
                 </div>
+                <p className="text-red-500">{registerError.Registerpassword}</p>
               </div>
 
               {/* Confirm Password Field */}
-              <div className="space-y-2">
+              <div className=" mb-3">
                 <label
                   htmlFor="confirmPassword"
                   className="text-sm font-medium  "
@@ -314,7 +244,6 @@ const LoginForm = () => {
                     onChange={handleRegisterChange}
                     placeholder="Confirm your password"
                     className="w-full pl-10 pr-10 py-2   border border-gray-500   placeholder-gray-400 rounded-md focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
-                    required
                   />
                   <button
                     type="button"
@@ -328,6 +257,7 @@ const LoginForm = () => {
                     )}
                   </button>
                 </div>
+                <p className="text-red-500">{registerError.confirmPassword}</p>
               </div>
 
               {/* Register Button */}

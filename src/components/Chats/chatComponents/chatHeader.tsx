@@ -1,14 +1,21 @@
-import { IUserState } from "@/interfaces/interfaces";
 import { db } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { useHandleList } from "@/zustand/useHandleChatList";
 import { doc, onSnapshot } from "firebase/firestore";
-import { CircleUser, Ellipsis, SquarePen, Video } from "lucide-react";
+import {
+  AlignJustify,
+  CircleUser,
+  Ellipsis,
+  List,
+  SquarePen,
+  Video,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ChatHeader = () => {
   const [chatHeader, setChatHeader] = useState<any | null>(null);
   const { userChat } = useCurrentChat() as any;
+  const { SelectAnotherChat } = useHandleList() as any;
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "users", userChat?.uid), (doc) => {
@@ -37,8 +44,12 @@ const ChatHeader = () => {
       </div>
       <div className=" flex gap-4 items-center">
         <Ellipsis className=" cursor-pointer" />
-        <Video className=" cursor-pointer" />
+
         <SquarePen className=" cursor-pointer" />
+        <AlignJustify
+          className=" cursor-pointer lg:hidden"
+          onClick={SelectAnotherChat}
+        />
       </div>
     </div>
   );

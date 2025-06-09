@@ -52,3 +52,8 @@ export interface ICurrentChat {
   logoutState: () => void;
   fetchCurrentChat: (chatId: string, user: IUser) => void;
 }
+
+export interface IHandleChatList {
+  SelectAnotherChat: () => void;
+  selectAnohterChat: boolean;
+}

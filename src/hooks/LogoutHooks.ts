@@ -1,7 +1,6 @@
 import { ICurrentChat } from "@/interfaces/interfaces";
 import { auth } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import React from "react";
+import { useCurrentChat } from "@/zustand/useChatState";
 
 const logOutHooks = () => {
   const { logoutState } = useCurrentChat() as ICurrentChat;

@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { UseCurrentUser } from "@/lib/useState";
+import { UseCurrentUser } from "@/zustand/useState";
 import { IUser, IUSerSearch, IUserState } from "@/interfaces/interfaces";
 import Image from "next/image";
 import usreProfile from "../../../../public/person.png";

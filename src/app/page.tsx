@@ -5,10 +5,11 @@ import Details from "@/components/Details/details";
 import ListUsers from "@/components/Lists/list";
 import { IUserState } from "@/interfaces/interfaces";
 import { auth } from "@/lib/firebase";
-import { useCurrentChat } from "@/lib/useChatState";
-import { UseCurrentUser } from "@/lib/useState";
+import { useCurrentChat } from "@/zustand/useChatState";
+import { UseCurrentUser } from "@/zustand/useState";
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect } from "react";
+import Loading from "./loading";
 
 const Home = () => {
   const { currentUser, loading, fetchCurrentUser } =
@@ -24,12 +25,7 @@ const Home = () => {
     };
   }, []);
 
-  if (loading)
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        Loading...
-      </div>
-    );
+  if (loading) return <Loading />;
   return (
     <div className="w-full h-full pb app flex gap-3 ">
       {currentUser ? (
