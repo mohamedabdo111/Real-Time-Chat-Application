@@ -167,6 +167,7 @@ const loginHook = () => {
     handleRegisterChange,
     handleLoginSubmit,
     handleRegisterSubmit,
+    setRegisterError,
   };
 };
 

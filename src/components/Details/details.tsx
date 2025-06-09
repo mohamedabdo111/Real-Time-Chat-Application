@@ -69,7 +69,7 @@ const Details = () => {
           className="bg-gray-300 text-black capitalize px-4 py-2 rounded-full w-full cursor-pointer"
           onClick={logOut}
         >
-          logout
+          log out
         </button>
       </div>
     </div>

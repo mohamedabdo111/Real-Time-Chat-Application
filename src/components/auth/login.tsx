@@ -2,6 +2,7 @@
 import { User, Key, Eye, EyeOff, Mail } from "lucide-react";
 
 import loginHook from "@/hooks/LoginHook";
+import { useState } from "react";
 
 const LoginForm = () => {
   const {
@@ -22,13 +23,20 @@ const LoginForm = () => {
     handleRegisterChange,
     handleLoginSubmit,
     handleRegisterSubmit,
+    setRegisterError,
   } = loginHook();
+  const [loginOrRegister, setLoginOrRegister] = useState(true);
 
   return (
     <div className="w-full h-full flex items-center justify-center p-4">
       <div className="w-full flex  justify-around items-center gap-8">
         {/* Login Form - Left Side */}
-        <div className="w-[500px]">
+
+        <div
+          className={`w-[500px] ${
+            loginOrRegister ? "block" : "hidden lg:block"
+          }`}
+        >
           {/* Header */}
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold   mb-3">Welcome Back</h1>
@@ -120,12 +128,15 @@ const LoginForm = () => {
                 <div className="mt-6 text-center block   lg:hidden ">
                   <p className="  text-sm">
                     Don't have an account?{" "}
-                    <a
-                      href="#"
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                    <button
+                      onClick={() => {
+                        setLoginOrRegister(false);
+                        setRegisterError({});
+                      }}
+                      className="text-blue-400 cursor-pointer hover:text-blue-300 transition-colors"
                     >
                       Sign up
-                    </a>
+                    </button>
                   </p>
                 </div>
               </div>
@@ -137,9 +148,12 @@ const LoginForm = () => {
         <div className="hidden lg:flex items-center justify-center">
           <div className=" h-96 border"></div>
         </div>
-
         {/* Register Form - Right Side */}
-        <div className="w-[500px] hidden lg:block">
+        <div
+          className={`w-[500px]  ${
+            !loginOrRegister ? "block" : "hidden lg:block"
+          }`}
+        >
           {/* Header */}
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold   mb-3">Create Account</h1>
@@ -264,12 +278,27 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={loading}
+                name="register"
                 className={`w-full bg-green-500 hover:bg-green-600 ${
                   loading && "opacity-50 cursor-not-allowed"
                 }    font-medium py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-700`}
               >
                 {loading ? "Loading..." : "Register"}
               </button>
+              <div className="mt-6 text-center block   lg:hidden ">
+                <p className="  text-sm">
+                  Already have an account{" "}
+                  <button
+                    onClick={() => {
+                      setLoginOrRegister(true);
+                      setLoginError({});
+                    }}
+                    className="text-blue-400 cursor-pointer hover:text-blue-300 transition-colors"
+                  >
+                    Sign in
+                  </button>
+                </p>
+              </div>
             </form>
           </div>
         </div>
