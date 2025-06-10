@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en" bbai-tooltip-injected="true">
       <body className={`${metrophobic.className} antialiased`}>
         {children}
-        <Toaster position="top-right" reverseOrder={false} />
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
