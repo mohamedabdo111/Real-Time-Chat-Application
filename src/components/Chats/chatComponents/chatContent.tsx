@@ -55,7 +55,7 @@ const ChatContent = () => {
     setUserSeen();
   });
   return (
-    <div className="flex-2 py-3">
+    <div className="flex-2 py-3 overflow-auto">
       {/* first user */}
       {chatMessages.map((item: IMessageChat, index) => {
         return item.senderId !== currentUser.uid ? (
