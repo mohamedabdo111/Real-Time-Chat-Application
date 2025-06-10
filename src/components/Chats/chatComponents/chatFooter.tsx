@@ -130,9 +130,11 @@ const ChatFooter = () => {
               onClick={() => setShow((prev) => !prev)}
             />
 
-            <div className="absolute bottom-[50px] right-0 ">
-              <EmojiPicker
+            <div className="absolute bottom-[50px] right-[-50px] sm:right-0 ">
+              <EmojiPicker 
+              className="w-full"
                 open={show}
+                width={300}
                 onEmojiClick={(e) => setText((prev) => prev + e.emoji)}
               />
             </div>
