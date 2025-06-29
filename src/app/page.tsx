@@ -19,6 +19,7 @@ const Home = () => {
   useEffect(() => {
     const res = onAuthStateChanged(auth, (user) => {
       fetchCurrentUser(user?.uid || "");
+      console.log(user);
     });
     return () => {
       res();

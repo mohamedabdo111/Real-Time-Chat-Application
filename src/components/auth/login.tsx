@@ -24,6 +24,7 @@ const LoginForm = () => {
     handleLoginSubmit,
     handleRegisterSubmit,
     setRegisterError,
+    loginWithGoogle,
   } = loginHook();
   const [loginOrRegister, setLoginOrRegister] = useState(true);
 
@@ -113,6 +114,7 @@ const LoginForm = () => {
               {/* Social Login Buttons */}
               <div className="space-y-3">
                 <button
+                  onClick={loginWithGoogle}
                   type="button"
                   className="w-full   border border-gray-500   hover:bg-gray-500 py-2.5 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
                 >

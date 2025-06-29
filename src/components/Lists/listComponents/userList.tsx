@@ -4,17 +4,19 @@ import { useCurrentChat } from "@/zustand/useChatState";
 import { UseCurrentUser } from "@/zustand/useState";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { get } from "http";
-import { CircleUser } from "lucide-react";
-import React, { useEffect } from "react";
+import { ChevronDown, CircleUser, Minus, Plus, Search } from "lucide-react";
+import React, { use, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import usreProfile from "../../../../public/person.png";
 import { formatRelativeTime } from "@/lib/FormatDate";
 import { useHandleList } from "@/zustand/useHandleChatList";
+import Modal from "./ModalGetAllUsers";
 const UserList = () => {
   const [chatList, setChatList] = React.useState<any[]>([]);
   const { currentUser } = UseCurrentUser() as IUserState;
   const { fetchCurrentChat, fetchUserChat, chatId } = useCurrentChat() as any;
   const { SelectAnotherChat } = useHandleList() as any;
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -73,9 +75,64 @@ const UserList = () => {
     }
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const Ref = useRef<HTMLInputElement>(null);
+
+  const handleClickSearch = () => {
+    if (Ref.current) {
+      Ref.current.focus();
+    }
+  };
+
+  const filterData = chatList.filter((chat: IChatList) =>
+    chat?.userData?.userName
+      .toLocaleLowerCase()
+      .includes(search.toLocaleLowerCase())
+  );
+
   return (
     <>
-      {chatList.map((chat: IChatList, index) => {
+      <>
+        <div className=" flex justify-between items-center py-5 border-b-[2px] border-gray-200">
+          <div className="flex gap-3 items-end">
+            <h1 className="text-xl font-semibold">Messages </h1>
+            <ChevronDown />
+          </div>
+
+          <div
+            className="text-white p-2 rounded-full bg-primary-color cursor-pointer"
+            onClick={() => setShowModal(true)}
+          >
+            {!showModal ? <Plus /> : <Minus />}
+          </div>
+        </div>
+        <div className="flex items-center gap-5 my-2 ">
+          <div className="flex items-center flex-1 bg-gray-200 gap-2 px-4 rounded-lg">
+            <Search
+              className=" cursor-pointer text-gray-400"
+              onClick={handleClickSearch}
+            />
+            <input
+              ref={Ref}
+              type="text"
+              placeholder="Search"
+              className="w-full py-[10px] flex-1 border-0 outline-0 "
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            ></input>
+          </div>
+
+          {showModal && (
+            <Modal
+              title="Search about users"
+              isOpen={showModal}
+              setOpen={setShowModal}
+              onClose={() => setShowModal(false)}
+            />
+          )}
+        </div>
+      </>
+      {filterData.map((chat: IChatList, index) => {
         return (
           <div
             className={`flex items-center gap-4 flex-1 px-4 py-2 my-2 cursor-pointer hover:bg-gray-100 rounded-xl ${

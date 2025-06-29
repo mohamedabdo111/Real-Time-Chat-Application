@@ -6,6 +6,7 @@ export const UseCurrentUser = create((set) => ({
   currentUser: null,
   loading: true,
   fetchCurrentUser: async (uid: string) => {
+    console.log(uid);
     if (!uid || uid === "") return set({ currentUser: null, loading: false });
 
     try {

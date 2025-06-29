@@ -6,6 +6,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const loginHook = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -149,6 +150,45 @@ const loginHook = () => {
     }
   };
 
+  const loginWithGoogle = () => {
+    // Implement Google login logic here
+
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+
+        console.log(token);
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user, "user");
+        await setDoc(doc(db, "users", user.uid), {
+          userName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          blocked: [],
+          createdAt: new Date().toISOString(),
+        });
+
+        await setDoc(doc(db, "userChats", user.uid), {
+          chats: [],
+        });
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
   return {
     showPassword,
     setShowPassword,
@@ -168,6 +208,7 @@ const loginHook = () => {
     handleLoginSubmit,
     handleRegisterSubmit,
     setRegisterError,
+    loginWithGoogle,
   };
 };
 
